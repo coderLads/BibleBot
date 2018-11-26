@@ -12,9 +12,7 @@ const prefix = ".";
 
 bot.on('ready', () => {  
     console.log("Bot ready!");
-    var d = new Date();
-    var daysLeft = 30 - d.getDate();
-    bot.user.setActivity(daysLeft + ' days left!');
+    bot.user.setActivity('.help');
 })
 
 bot.on('message', (message) => {
@@ -63,12 +61,13 @@ bot.on('message', (message) => {
     }
 
     if(command == 'emojijson') {
+	message.delete(1000);
         pastebin
         .createPasteFromFile("storage/emojiMapping.json", "pastebin-js test", null, 1, "N")
         .then(function (data) {
             // we have succesfully pasted it. Data contains the id
             //console.log(data);
-            message.channel.send("Current emoji mappings uploaded to: " + data);
+            message.author.send("Current emoji mappings uploaded to: " + data);
         })
         .fail(function (err) {
             console.log(err);
@@ -81,7 +80,6 @@ bot.on('message', (message) => {
         let messageToSend = "```\n";
         
         messageToSend += tab("emojify") + "type a string after to emojify it\n";
-        messageToSend += tab("stats") + "see how you compare to other users\n";
         messageToSend += tab("verse") + "random bible verse\n";
         messageToSend += tab("define [word] [emoji]") + "adds emoji to bible list of usable emojis\n";
         messageToSend += tab("help") + "this";
@@ -106,10 +104,9 @@ function tab(str) {
 }
 
 function addEmoji(dict,message){
-    let fullString = "";
-    message = message.toLowerCase();
+    let fullString= "";
     message.split(" ").forEach(word => {
-        if (word in dict){
+        if (word.toLowerCase() in dict){
            fullString += word + " " + dict[word] + " ";
         } else {
             fullString += word + " ";
