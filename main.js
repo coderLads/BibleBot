@@ -46,7 +46,7 @@ bot.on('message', (message) => {
     if(command == 'define') {
         message.delete(1000);
 
-        let word = args[0];
+        let word = args[0].toLowerCase();
         let emoji = args[1];
  
         dict[word] = emoji;
@@ -103,11 +103,11 @@ function tab(str) {
     return str;
 }
 
-function addEmoji(dict,message){
-    let fullString= "";
+function addEmoji(dict, message) {
+    let fullString = "";
     message.split(" ").forEach(word => {
         if (word.toLowerCase() in dict){
-           fullString += word + " " + dict[word] + " ";
+           fullString += word + " " + dict[word.toLowerCase()] + " ";
         } else {
             fullString += word + " ";
         }
